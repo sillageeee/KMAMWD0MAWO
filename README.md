@@ -1,27 +1,83 @@
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/jensonhirst/Orion/main/source')))()
+-- Carrega Orion Library
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 
-local Window = OrionLib:MakeWindow({Name = "Title of the library", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+-- Variáveis para configuração
+_G.AimbotEnabled = false
+_G.ShowFOV = true
+_G.Smoothness = 0.1
+_G.TeamCheck = true
+_G.WallCheck = true
+_G.AimPart = "Head"
 
---[[
-Name = <string> - The name of the UI.
-HidePremium = <bool> - Whether or not the user details shows Premium status or not.
-SaveConfig = <bool> - Toggles the config saving in the UI.
-ConfigFolder = <string> - The name of the folder where the configs are saved.
-IntroEnabled = <bool> - Whether or not to show the intro animation.
-IntroText = <string> - Text to show in the intro animation.
-IntroIcon = <string> - URL to the image you want to use in the intro animation.
-Icon = <string> - URL to the image you want displayed on the window.
-CloseCallback = <function> - Function to execute when the window is closed.
-]]
+-- Criar janela
+local Window = OrionLib:MakeWindow({Name = "Tryhard Aimbot", HidePremium = false, SaveConfig = true, ConfigFolder = "TryhardAimbot"})
 
-local Tab = Window:MakeTab({
-	Name = "Tab 1",
+-- Criar aba Aimbot
+local AimbotTab = Window:MakeTab({
+	Name = "Aimbot",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
---[[
-Name = <string> - The name of the tab.
-Icon = <string> - The icon of the tab.
-PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
-]]
+-- Toggle do Aimbot
+AimbotTab:AddToggle({
+	Name = "Aimbot Ativado",
+	Default = false,
+	Save = true,
+	Callback = function(Value)
+		_G.AimbotEnabled = Value
+	end    
+})
+
+-- Toggle FOV
+AimbotTab:AddToggle({
+	Name = "Mostrar FOV",
+	Default = true,
+	Save = true,
+	Callback = function(Value)
+		_G.ShowFOV = Value
+	end    
+})
+
+-- Slider Suavidade
+AimbotTab:AddSlider({
+	Name = "Suavidade do Aimbot",
+	Min = 0,
+	Max = 1,
+	Default = 0.1,
+	Increment = 0.01,
+	ValueName = "",
+	Callback = function(Value)
+		_G.Smoothness = Value
+	end    
+})
+
+-- Toggle Team Check
+AimbotTab:AddToggle({
+	Name = "Team Check",
+	Default = true,
+	Save = true,
+	Callback = function(Value)
+		_G.TeamCheck = Value
+	end    
+})
+
+-- Toggle WallCheck
+AimbotTab:AddToggle({
+	Name = "Wall Check",
+	Default = true,
+	Save = true,
+	Callback = function(Value)
+		_G.WallCheck = Value
+	end    
+})
+
+-- Dropdown AimPart
+AimbotTab:AddDropdown({
+	Name = "Parte para Mirar",
+	Default = "Head",
+	Options = {"Head", "UpperTorso", "HumanoidRootPart"},
+	Callback = function(Value)
+		_G.AimPart = Value
+	end    
+})
